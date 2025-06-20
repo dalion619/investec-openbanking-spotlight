@@ -146,6 +146,35 @@
             "source": "POST /za/v1/cards HTTP/1.1 \nHost: openapi.investec.com \nContent-Type: application/json \nAuthorization: Bearer {yourBearerToken} \nContent-Length: 122 \n \n{\n     \"AccountNumber\": \"{accountnumber}\",\n     \"EmbossName\" : \"CardEmbossName\",\n     \"EmbossName2\" : \"CardEmbossName2\"\n}"
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "AccountNumber": {
+                    "type": "string",
+                    "description": "Number you identify your account with"
+                  },
+                  "EmbossName": {
+                    "type": "string",
+                    "description": "What you identify your virtual card with"
+                  },
+                  "EmbossName2": {
+                    "type": "string",
+                    "description": "EmbossName2"
+                  }
+                },
+                "example": {
+                  "AccountNumber": "10011001100",
+                  "EmbossName": "VirtualCardName",
+                  "EmbossName2": "EmbossName2"
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Resource has been retrieved",
@@ -272,7 +301,7 @@
       },
       "post": {
         "summary": "Get Card Detail (With Sensitive Information)",
-        "description": "Get the detail of a card including full card number, cvv and expiry date\nNote on usage \n- In order to retrieve sensitive information on the card you have to supply details regarding a RSA Public key that gets created client side. We will encrypt the sensitive information at the lowest level with the specified public key information.  \n- In order to view the information in the extended property you would need to decrypt it with the Private key created in the preceding step.  \n\n| Area                   | Value     |\n| :------                | :-------  |\n| Encryption Algorithm   | RSA       |\n| Key Size               | 2048      |",
+        "description": "Get the detail of a card including full card number, cvv and expiry date\nNote on usage \n- In order to retrieve sensitive information on the card you have to supply details regarding a RSA Public key that gets created client side. We will encrypt the sensitive information at the lowest level with the specified public key information.  \n[Generate RSA Key Pair](https://gchq.github.io/CyberChef/#recipe=Generate_RSA_Key_Pair('2048','PEM'/disabled)From_Base64('A-Za-z0-9%2B/%3D',true,false)To_Hex('None',0)Parse_ASN.1_hex_string(0,257)&input=TUlJRW93SUJBQUtDQVFFQW1DOFRJNjd1aHFlVXRQTGFtNzNEV0QrQmVKM21vYVZVTitBNTRCUFBSdGQ3bGY4eg0KcURqUWJaUThxUVkzRWpjTElJa1hPa2hVM0xSUUpoTW5sQmFsd1NLaG5xM0RxT21PTkdIR2FjRVV0eGZCVmllaA0Kb3ZsKzRsM0E0T005dmczS3hsQWx6L2F0cHZKWjBFa1hRUWFkTWFlTUQ0N3ExRFlKb0tFV2hlMytIbzRoN1p3Sg0KMm9kQU9pMzBsVUd2NTU2MmhqZllFSDlrVDJKeXZGREJMVzBtQ2VDVE5jZEhzK25IUElreDZWUjlFNnVqZWgrTA0KODMyaFBWUHBDY3RTQ3M4UmxVdkR6OCtVNWpHR1ZXN1lPRVRtK1FGdzRWTitWekVuY0EyN0o2SXdKeVh5S00vdQ0KRHBEcW9reXhCd1ZhcHRRKzZLY1QxQ3lGcTI2dlR5OVoydEl2NVFJREFRQUJBb0lCQUFKSnNPSzRNa2ROZFNlYw0KUUF1WDJIdzI1aklqUTVDYURQQlRHMk9pUUpzNnlaV1pjdFFjV0l2Ukx2RkdrZVRnOVhhZGdQOGtEN3lLckdySw0KSG0zMFFqVXJXVjBxbFJhd3ZpM002My96QW1YM1FqV1NublEyQm9HT01jUmZ2akdoZ1BNbXlNNjkwV0lCWWpiRw0KcG9ZWWZKdit2aFVNeTd4NWZIOFE5T2I2Q3pnMzJsZGZJcTJORUFCNERvc01seGZrNXcxeU1MTTdFWXZkRHQ5Zw0KQ2NVaXNVdy9PYitRQklJbXpYczVlU2lLY0QyNlFUdXc2S2RrTlpIQmVuMWN1TmdQZ0E0eWdrWk1rV054aDB1eA0KNERLNFM2QU1wM0t1dFJGa2tkc1pGby9UbU1jOVdxYVg3OUZReWNFU24wNzFGcEYwejNkbDhWYmMxcGRtYjdJKw0KeGZKTHBMa0NnWUVBMXdJWlJ2Z1dQVkpKbFRpak12UklJOUgzMWFzczVudUlYSkZ0TzlXT2RiR293OXRYU1RDSQ0KY0JWSjVkYms3NENScU1EODFxeWJ0bjJOQmxVRnIwNE0vdHdCWlhZSXkrSktXY0JpQkpzeWtUZ0tNN21GVWlTUg0Kb2ttSUIxMEM5QStRa2JGdFNMZ01GdWMyQTlyejdPa1l0TUpJa1VmclJiUUsvZ3NrQytuWEJKMENnWUVBdFRLMg0KQUJkekpDZjlrcmRVdVR4YUtOeVhSbTF2NlJkUTlxNGdtOWF0aUdrN0g4THpjM1YybkxkbXNUVkxDY3ZnUGVkcA0KOFVqL0tJaU0wRzNwb2tZdlhoYS9vQkxBMDBhU1YzWW1nMHpxT3lsSDZ1Vmd0OVRxNzlWR01sb2paYlV6MXBMbg0KbzJON3BseDZCeitWRjVoWkplNGptSjZHNVp6VW9TeUppSVFGNGVrQ2dZRUFrdldwUjF2cy80OE9Jb09xOFBvTg0Ka1FaRVN2U01aU0dNckJEdXc5WU5ZSjdGUnRIV2tIMHUxTVdJVkNRVktTc001SGE4bXhNeC80TkRjRStPNmlzRQ0KTVBNNXRSci9talFiTTh1T2M2Mk0yN3VkSll1cDkrSnM5S3NqNGp5Tjl6bm9TOTBsWUc0RVBXZGVBVGFZUVpkMQ0KdnArSk1Gd2pFT3FtRk15U245MytqUFVDZ1lBWndvVFhUSDRsQkw1cTdqOVFPa0ZERCtFOXRPODAvd2lXbVRpdg0KanZ5S3FSTXJ0OFp1Z3FPRE1odWFVODVBTFVqSzVDeE9qaWNnTnhGMXpEcHJ4SGlWY3J4NVlGRWplQ1B6NVNzaQ0KZlh2TFAxb25EY2NMTzJ6Ty9jNEYrSVNSd0FvSGxranlGSUdPckJUNUZOUDRUOE5Vdmg4M1lrb2hPSU9PQ2t2Zg0KS1kzQWlRS0JnQ240Ri90Qis5djYvNjN5MVlWcGlyOUdhSTkwLy9qYTUySThMc2txSW1DMjlTZG1MV1hnNmp1NQ0KRVpxMnVHZ3VMdzJ1dTlHQTZTbjMzclpEOWJpaEJOdFpYRkJvcm1iK2NVRFJZOFc0NHhIMys5TFUyazRuK3J6Sg0KaGtIdzVBb2VPa0xBRW1rK2RqUmhXOW9DRWMwckt2MUFpcFJtNlhhalg5NUpmMmVwNzFFNw&ieol=CRLF)\n- In order to view the information in the extended property you would need to decrypt it with the Private key created in the preceding step.\n[RSA Decrypt](https://gchq.github.io/CyberChef/#recipe=From_Base64('A-Za-z0-9%2B/%3D',true,false)RSA_Decrypt('-----BEGIN%20RSA%20PRIVATE%20KEY-----%5CnMIIEowIBAAKCAQEAmC8TI67uhqeUtPLam73DWD%2BBeJ3moaVUN%2BA54BPPRtd7lf8z%5CnqDjQbZQ8qQY3EjcLIIkXOkhU3LRQJhMnlBalwSKhnq3DqOmONGHGacEUtxfBVieh%5Cnovl%2B4l3A4OM9vg3KxlAlz/atpvJZ0EkXQQadMaeMD47q1DYJoKEWhe3%2BHo4h7ZwJ%5Cn2odAOi30lUGv5562hjfYEH9kT2JyvFDBLW0mCeCTNcdHs%2BnHPIkx6VR9E6ujeh%2BL%5Cn832hPVPpCctSCs8RlUvDz8%2BU5jGGVW7YOETm%2BQFw4VN%2BVzEncA27J6IwJyXyKM/u%5CnDpDqokyxBwVaptQ%2B6KcT1CyFq26vTy9Z2tIv5QIDAQABAoIBAAJJsOK4MkdNdSec%5CnQAuX2Hw25jIjQ5CaDPBTG2OiQJs6yZWZctQcWIvRLvFGkeTg9XadgP8kD7yKrGrK%5CnHm30QjUrWV0qlRawvi3M63/zAmX3QjWSnnQ2BoGOMcRfvjGhgPMmyM690WIBYjbG%5CnpoYYfJv%2BvhUMy7x5fH8Q9Ob6Czg32ldfIq2NEAB4DosMlxfk5w1yMLM7EYvdDt9g%5CnCcUisUw/Ob%2BQBIImzXs5eSiKcD26QTuw6KdkNZHBen1cuNgPgA4ygkZMkWNxh0ux%5Cn4DK4S6AMp3KutRFkkdsZFo/TmMc9WqaX79FQycESn071FpF0z3dl8Vbc1pdmb7I%2B%5CnxfJLpLkCgYEA1wIZRvgWPVJJlTijMvRII9H31ass5nuIXJFtO9WOdbGow9tXSTCI%5CncBVJ5dbk74CRqMD81qybtn2NBlUFr04M/twBZXYIy%2BJKWcBiBJsykTgKM7mFUiSR%5CnokmIB10C9A%2BQkbFtSLgMFuc2A9rz7OkYtMJIkUfrRbQK/gskC%2BnXBJ0CgYEAtTK2%5CnABdzJCf9krdUuTxaKNyXRm1v6RdQ9q4gm9atiGk7H8Lzc3V2nLdmsTVLCcvgPedp%5Cn8Uj/KIiM0G3pokYvXha/oBLA00aSV3Ymg0zqOylH6uVgt9Tq79VGMlojZbUz1pLn%5Cno2N7plx6Bz%2BVF5hZJe4jmJ6G5ZzUoSyJiIQF4ekCgYEAkvWpR1vs/48OIoOq8PoN%5CnkQZESvSMZSGMrBDuw9YNYJ7FRtHWkH0u1MWIVCQVKSsM5Ha8mxMx/4NDcE%2BO6isE%5CnMPM5tRr/mjQbM8uOc62M27udJYup9%2BJs9Ksj4jyN9znoS90lYG4EPWdeATaYQZd1%5Cnvp%2BJMFwjEOqmFMySn93%2BjPUCgYAZwoTXTH4lBL5q7j9QOkFDD%2BE9tO80/wiWmTiv%5CnjvyKqRMrt8ZugqODMhuaU85ALUjK5CxOjicgNxF1zDprxHiVcrx5YFEjeCPz5Ssi%5CnfXvLP1onDccLO2zO/c4F%2BISRwAoHlkjyFIGOrBT5FNP4T8NUvh83YkohOIOOCkvf%5CnKY3AiQKBgCn4F/tB%2B9v6/63y1YVpir9GaI90//ja52I8LskqImC29SdmLWXg6ju5%5CnEZq2uGguLw2uu9GA6Sn33rZD9bihBNtZXFBormb%2BcUDRY8W44xH3%2B9LU2k4n%2BrzJ%5CnhkHw5AoeOkLAEmk%2BdjRhW9oCEc0rKv1AipRm6XajX95Jf2ep71E7%5Cn-----END%20RSA%20PRIVATE%20KEY-----','','RSAES-PKCS1-V1_5','SHA-1')&input=Rno3KzJTVEdMT1dnR0FlcDc1REk3ZmpuSUpSWGVMRksrYUVTZXkrSzE3cnF1RkRkc1M2YmRtdWFtQmc4U0RGWFV1UThSTU4yaVZoSm5yVlNKaFBubVRGVGhHOFYvV1hzMHNocVNjaDNsNUpaRnp0Nmw0TWx4YUg3UjE3OVc1NW81K0ZQQzZmOThhei96OVh3SVhpSnpOU1JUd09EaXI3ZEdha1dqUFBnYXpNSFppaFhwSTN6YzJlSG5oZm0rVkVUZ0xqN2lVaEt3dWtvUmFiN0Y3RTVxbHAvQ1laWGxXaVA5S3BnYnd5VXprS1JxUkpUU29yeXFTZmNXc3FFOGVvMm5HVkgvWkRMd2Q3MXZocFAzWlBrNEIyMXpaYnQ1ZVoxS3V0Y1BRNFBKSmdiNE9xMUxheGtNWUJCaVZ2azNGaWprZ0czd3VmOEdRZktaeFJaS0V0c25RPT0)  \n\n| Area                   | Value     |\n| :------                | :-------  |\n| Encryption Algorithm   | RSA       |\n| Key Size               | 2048      |",
         "operationId": "GetCardDetailSensitive",
         "tags": [
           "Card management"
@@ -342,7 +371,7 @@
                   "keyId": 0,
                   "identifier": "My RSA Key Identifier",
                   "appName": "Some App name",
-                  "modulus": "6bddcfec7132fc5f80a00b236cc891480b3e08d49b64eb9a4794de4f8af4345a8746131e2ff1f985b7c4bd3e554d759b30d612a5013f43d0e0f2d0b2383a43426a596f98b9a45adf254f9a9730f258c051152a73174e24c453a7199746f8535f6e3a07b09aaaaa67ef2b129bda63de86a111f9b5f6e1f72726ed115b916d6a379f392663a1a4194d15d6c77dfbbd255f3992e161e624dc3795cc60f634ea88e6d077b9c8f535ed4465661d7055d09b3187e23ed5b0d38169c8d37d813aa2ac78848ac52306e2c5c4b9a5d4a32bd2bdb39cb45d32d2453dc2ab9ea2bea9170b9236b0f055a1cd2595635ae9f563003da9047cd96097bc45dcc97a0601d2b92431",
+                  "modulus": "00982f1323aeee86a794b4f2da9bbdc3583f81789de6a1a55437e039e013cf46d77b95ff33a838d06d943ca9063712370b2089173a4854dcb4502613279416a5c122a19eadc3a8e98e3461c669c114b717c15627a1a2f97ee25dc0e0e33dbe0dcac65025cff6ada6f259d0491741069d31a78c0f8eead43609a0a11685edfe1e8e21ed9c09da87403a2df49541afe79eb68637d8107f644f6272bc50c12d6d2609e09335c747b3e9c73c8931e9547d13aba37a1f8bf37da13d53e909cb520acf11954bc3cfcf94e63186556ed83844e6f90170e1537e573127700dbb27a2302725f228cfee0e90eaa24cb107055aa6d43ee8a713d42c85ab6eaf4f2f59dad22fe5",
                   "exponent": "010001"
                 }
               }
